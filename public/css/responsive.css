@@ -1,0 +1,142 @@
+@charset "UTF-8";
+
+@media (min-width: 1901px) {
+
+
+
+}
+
+@media (max-width: 1600px) {
+	
+}
+
+@media (max-width: 1500px) {
+
+}
+
+@media (max-width: 1300px) {
+   
+}
+
+@media (min-width: 1199px) {
+    
+}
+
+@media (max-width: 1199px) {
+
+}
+
+@media (max-width: 1024px) {
+
+}
+
+@media only screen and (max-width:1024px) and (min-width: 778px) {
+    .full-view .valid-date {
+		left: 15px;
+	}
+
+	.tab-content .carousel .indicators {
+		bottom: -25px;
+	}
+}
+
+/* Navigation breakpoint start */
+@media (max-width: 991px) {
+
+}
+/* Navigation breakpoint end */
+
+@media (max-width: 991px) {
+
+
+}
+
+@media only screen and (max-width: 991px) and (orientation: landscape) {}
+
+@media only screen and (max-width: 991px) and (min-width: 767px) and (orientation: landscape) {
+    
+}
+
+@media (max-width: 778px) {
+	
+
+
+}
+
+@media (max-width: 767px) {
+
+}
+
+@media screen and (max-width: 575px) {
+	
+}
+
+@media screen and (max-width: 480px) {
+
+	.modal {
+		width: 80%;
+	}
+
+	.mobileOk {
+		width: 306px!important;
+	}
+
+	html, body {
+		font-size:0.94rem;
+	}
+
+	.card .card-content {
+		padding: 15px;
+	}
+
+	.card .card-action {
+		padding: 10px 15px;
+	}
+
+	.container {
+		width: 98%;
+	}
+
+	.float-link {
+		left:35%;
+	}
+
+	.tabs .tab {
+		flex-grow:0;
+	}
+
+	.tab-content .carousel .indicators {
+		bottom: 7px;
+    height: 39px;
+	}
+
+	.student-powerment-mission {
+		background: url("../images/girl-wonder.png") right 2% bottom -10px no-repeat, url("../images/propeller-ballone.png") left 20% bottom -30px no-repeat;
+		background-color: #0173a9;
+		background-size: 135px,80px;
+	}
+
+	.carousel {
+		height: 325px!important;
+	}
+
+	.detail-view {
+		width: auto;
+		padding-left: 3px;
+		padding-right: 3px;
+	}
+
+	.full-view .valid-date {
+		left: 10px;
+	}
+
+	.mobile-menu {
+		width: auto;
+	}
+
+}
+@media (max-height: 460px) {
+    
+}
+
+@media (max-height: 600px) {}
