@@ -19,6 +19,7 @@ class Modal extends Component {
       autoRenewel:false,
       isLoading:false,
       tommorowDate:0,
+      ErrorMessage:""
     }
   }
 
@@ -49,6 +50,7 @@ class Modal extends Component {
     // console.log(this.SuccessModal);
     M.Modal.init(this.Modal, options);
     M.Modal.init(this.SuccessModal, options);
+    M.Modal.init(this.ErrorModal, options);
 
     // let instance = M.Modal.getInstance(this.SuccessModal);
    
@@ -74,6 +76,7 @@ class Modal extends Component {
   PurchasePlan = () =>{
 
     let instance = M.Modal.getInstance(this.SuccessModal);
+    let instanceError = M.Modal.getInstance(this.ErrorModal);
     this.setState({
       isLoading: true
     });
@@ -90,7 +93,11 @@ class Modal extends Component {
     ).catch(
       (error) => {
         // console.log(error.response.data.message);
-        M.toast({html: error.response.data.message})
+        this.setState({
+          ErrorMessage:error.response.data.message
+        })
+        instanceError.open()
+       
         this.setState({
           isLoading: false
         });
@@ -158,6 +165,27 @@ class Modal extends Component {
           
             <div className="modal-footer">
                 <Link to="/" className="modal-close btn-flat">OK</Link>
+            </div>
+        </div>
+
+        <div
+          ref={Modal => {
+            this.ErrorModal = Modal;
+          }}
+          id="error-modal"
+          className="modal"
+        >
+            <div className="modal-content">
+                <h6>Error!</h6>
+                <p>
+                
+                You already have an active pack, Please try after 6AM {this.state.tommorowDate}
+                </p>
+              
+              </div>
+          
+            <div className="modal-footer">
+                <a href="#" className="modal-close btn-flat">OK</a>
             </div>
         </div>
 

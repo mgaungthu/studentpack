@@ -101,17 +101,27 @@ import Lang from "../commons/Lang";
   }
 
 
-   function diff_time(dt2) {
-     var dt1 = new Date();
-     var dt2 = new Date(dt2*1000);
-     var diffMs = (dt2 - dt1); // milliseconds between now & Christmas
-     var diffDays = Math.floor(diffMs / 86400000); // days
-     var diffHrs = Math.floor((diffMs % 86400000) / 3600000); // hours
-     var diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
+  //  function diff_time(dt2) {
+  //    var dt1 = new Date();
+  //    var dt2 = new Date(dt2*1000);
+  //    var diffMs = (dt2 - dt1); // milliseconds between now & Christmas
+  //    var diffDays = Math.floor(diffMs / 86400000); // days
+  //    var diffHrs = Math.floor((diffMs % 86400000) / 3600000); // hours
+  //    var diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
 
-     return diffHrs + " hours, " + diffMins + " minutes";
+  //    return diffHrs + " hours, " + diffMins + " minutes";
 
-   }
+  //  }
+
+
+  function diff_time(dt2) {
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+  ];
+    var dt2 = new Date(dt2*1000);
+    // console.log(monthNames[dt2.getMonth()] +" "+ dt2.getDate());
+    return monthNames[dt2.getMonth()] +" "+ dt2.getDate();
+  }
 
 
  
@@ -235,8 +245,8 @@ import Lang from "../commons/Lang";
                 <div className="card-content">
                   <h5 className="title margin-5px-top">{currentPlan.title}</h5>
 
-                  <p className="light-font">{ `Valid for ${currentPlan.validUntil == 0 ? "0 hours, 0 minutes" : diff_time(currentPlan.validUntil)}` }</p>
-                  
+                  {/* <p className="light-font">{ `Valid for ${currentPlan.validUntil == 0 ? "0 hours, 0 minutes" : diff_time(currentPlan.validUntil)}` }</p> */}
+                  <p className="light-font">{ `${currentPlan.validUntil == 0 ? "Valid till 8 AM" : "Valid till 8 AM " + diff_time(currentPlan.validUntil)}` }</p>
                   <div className="row center padding-15px-top">
                     <div className="col b-skills s12 m6 offset-m3 justify-content-center flex-column">
 

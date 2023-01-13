@@ -7,7 +7,8 @@ import App from './App';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   // <React.StrictMode>
-    <BrowserRouter  basename="/" >
+  
+    <BrowserRouter  basename={process.env.NODE_ENV === 'development' ? process.env.REACT_APP_DEV_BASE_DIR : process.env.REACT_APP_PROD_BASE_DIR} >
     <App />
     </BrowserRouter>
   // </React.StrictMode>
