@@ -48,8 +48,8 @@ const Packages = () => {
           }
           
         });
-        setgreenPlan(getGreenPlan);
-        setpinkPlan(getPinkPlan);
+        setgreenPlan(getGreenPlan.reverse());
+        setpinkPlan(getPinkPlan.reverse());
         // console.log(pinkPlan);
         setisLoading(false);
       }
@@ -67,7 +67,7 @@ const Packages = () => {
   const PackageOne = () => {
 
     const [buyId, setbuyId] = useState(0);
-
+    
     const CreateBuyId = (id) => {
       setbuyId(id);
     }
@@ -225,7 +225,7 @@ const Packages = () => {
                     <div className="row margin-10px-top">
                       <div className="col s12">
                         <div className="left">
-                          <span className="data-valid text-black">{Lang.Currency(value.price)}</span>
+                          <span className="data-valid text-black">{Lang.Currency(value.price)} {value.price === 300 ? <span className="suggest-price border-small-radius">Suggest Price</span> : ""} </span>
                           <p className="text-black big-font">
                             Enjoy the lowest price in the market today
                           </p>
@@ -289,7 +289,7 @@ const Packages = () => {
                       <div className="row margin-10px-top">
                         <div className="col s12">
                           <div className="left">
-                            <span className="data-valid text-black">{value.price} Ks</span>
+                            <span className="data-valid text-black">{value.price} Ks {value.price === 600 ? <span className="suggest-price border-small-radius">Suggest Price</span> : ""} </span>
                             <p className="text-black big-font">
                               Enjoy the lowest price in the market today
                             </p>
@@ -362,7 +362,7 @@ const Packages = () => {
                     <div className="row margin-10px-top">
                       <div className="col s12">
                         <div className="left">
-                          <span className="data-valid text-black">{Lang.Currency(value.price)}</span>
+                          <span className="data-valid text-black">{Lang.Currency(value.price)} {value.price === 300 ? <span className="suggest-price border-small-radius">Suggest Price</span> : ""} </span>
                           <p className="text-black big-font">
                             Enjoy the lowest price in the market today
                           </p>
@@ -435,7 +435,7 @@ const Packages = () => {
                       <div className="row margin-10px-top">
                         <div className="col s12">
                           <div className="left">
-                            <span className="data-valid text-black">{value.price} Ks</span>
+                            <span className="data-valid text-black">{value.price} Ks {value.price === 600 ? <span className="suggest-price border-small-radius">Suggest Price</span> : ""}</span>
                             <p className="text-black big-font">
                               Enjoy the lowest price in the market today
                             </p>

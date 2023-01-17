@@ -83,9 +83,24 @@ import Lang from "../commons/Lang";
 
       
   }, [Rotating])
+
+  const [windowSize, setWindowSize] = useState([
+    window.innerWidth,
+    window.innerHeight,
+  ]);
   
 
-  
+  useEffect(() => {
+    const handleWindowResize = () => {
+      setWindowSize([window.innerWidth, window.innerHeight]);
+    };
+
+    window.addEventListener('resize', handleWindowResize);
+
+    return () => {
+      window.removeEventListener('resize', handleWindowResize);
+    };
+  });
 
 
   // console.log(currentPlan);
@@ -104,6 +119,8 @@ import Lang from "../commons/Lang";
   //  function diff_time(dt2) {
   //    var dt1 = new Date();
   //    var dt2 = new Date(dt2*1000);
+  //    dt2.setHours(8);
+  //    dt2.setMinutes(0);
   //    var diffMs = (dt2 - dt1); // milliseconds between now & Christmas
   //    var diffDays = Math.floor(diffMs / 86400000); // days
   //    var diffHrs = Math.floor((diffMs % 86400000) / 3600000); // hours
@@ -182,12 +199,12 @@ import Lang from "../commons/Lang";
                       </p>
                     </div>
                     <div className="col s2 offset-s2 m2 offset-m2">
-                      <a
+                      {/* <a onClick={(e) => window.location.href = process.env.NODE_ENV==="development" ? "" : url}
                         className="waves-effect waves-default white-bg blue-text right buy btn border-radius-50px"
                         style={{ width: 100 }}
                       >
                         Top-up
-                      </a>
+                      </a> */}
                     </div>
                   </div>
                 </div>
@@ -208,9 +225,9 @@ import Lang from "../commons/Lang";
                   Empowerment Mission. Tap know more
                 </p>
                 <div className="center float-link">
-                  <a className="waves-effect waves-default white-bg blue-text center btn border-radius-50px">
+                <Link to="coming-soon" className="waves-effect waves-default white-bg blue-text center btn border-radius-50px">
                     Know More
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -221,7 +238,13 @@ import Lang from "../commons/Lang";
     )
 
   }
-  
+
+  const remainData = Math.round(currentPlan.remainingData * 100) / 100;
+  const maxData = Math.round(currentPlan.maxData * 100) / 100;
+  let url = "";
+  if(windowSize[0] > 480) {
+      url = "https://dev-anandaselfcareweb.azurewebsites.net/top-up"
+  }
 
     return (
       <>
@@ -251,7 +274,7 @@ import Lang from "../commons/Lang";
                     <div className="col b-skills s12 m6 offset-m3 justify-content-center flex-column">
 
                 
-                      <CurAmount remainingData={currentPlan.remainingData} refresh={Rotating} maxData={currentPlan.maxData} />
+                      <CurAmount remainingData={remainData} refresh={Rotating} maxData={maxData} />
 
                       
                       <p className="refresh margin-10px-top">
@@ -282,12 +305,12 @@ import Lang from "../commons/Lang";
                       </p>
                     </div>
                     <div className="col s2 offset-s2 m2 offset-m2">
-                      <a
+                      {/* <a onClick={(e) => window.location.href = url}
                         className="waves-effect waves-default white-bg blue-text right buy btn border-radius-50px"
                         style={{ width: 100 }}
                       >
                         Top-up
-                      </a>
+                      </a> */}
                     </div>
                   </div>
                 </div>
@@ -308,9 +331,9 @@ import Lang from "../commons/Lang";
                   Empowerment Mission. Tap know more
                 </p>
                 <div className="center float-link">
-                  <a className="waves-effect waves-default white-bg blue-text center btn border-radius-50px">
+                  <Link to="coming-soon" className="waves-effect waves-default white-bg blue-text center btn border-radius-50px">
                     Know More
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
