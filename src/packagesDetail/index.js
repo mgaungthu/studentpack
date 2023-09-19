@@ -111,7 +111,7 @@ const PackagesDetail = () => {
               <div className="left">
                 <span className="data-valid text-black">
                   {Lang.Currency(Detail.price)}{" "}
-                  {Detail.price === 600 || Detail.price === 300 ? <span class="suggest-price border-small-radius">Suggest Price</span> : ""}
+                  {Detail.price === 600 || Detail.price === 300 ? <span className="suggest-price border-small-radius">Suggest Price</span> : ""}
                 </span>
                 <p className="text-black big-font">
                   Enjoy the lowest price in the market today

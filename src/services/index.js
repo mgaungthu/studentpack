@@ -22,9 +22,9 @@ else if(localStorage.getItem("token")) {
 // console.log(access_token);
 const config = {
     headers: {
-    "Accept": "*/*",
-    'Authorization': access_token,
-    'Access-Control-Allow-Origin': '*',
+      "Accept": "*/*",
+      'Authorization': access_token,
+      'Access-Control-Allow-Origin': '*'
     }
 };
 

@@ -6,7 +6,8 @@ import Loading from "../commons/Loading";
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import Lang from "../commons/Lang";
-
+import { useDispatch, useSelector } from "react-redux";
+import { getDataAsync } from "../redux/currentStatusSlice";
 
 
  const Home = () => {
@@ -20,69 +21,50 @@ import Lang from "../commons/Lang";
   const [currentBalance,setcurrentBalance] = useState(0);
   const [refreshTime,setrefreshTime] = useState("00:00 AM");
   const [validTime,setvalidTime] = useState();
-  const [isLoading,setisLoading] = useState(true);
+  // const [isLoading,setisLoading] = useState(true);
   const [Rotating,setRotating] = useState(false);
+
+  const {currentstatus,loading} = useSelector((state) => state.currentstatus );
+  const dispatch =  useDispatch();
+  
+  const isLoading = loading;
 
   useEffect(() => {
 
-    
-    services.getCurrentPlan().then(
-      (response) => {
-        // console.log(response);
-        // currentBalance
-        // refreshedAt
-
-        if(response.currentPlan == null) {
-          const rft = timeFormat(response.refreshedAt);
-          setrefreshTime(rft);
-          setcurrentBalance(Lang.Currency(response.currentBalance));
-          setisLoading(false);
-          
-        }else {
-          const rft = timeFormat(response.refreshedAt);
-          setrefreshTime(rft);
-          setcurrentPlan(response.currentPlan);
-          setcurrentBalance(Lang.Currency(response.currentBalance));
-          setisLoading(false);
-        }
-      }
-      ).catch(
-        (err) => {
-          console.log(err);
-        }
-      );
-
-      
+    if(currentstatus.length === 0) {
+      dispatch(getDataAsync({loading:true}));
+    }
   }, [])
-
 
   useEffect(() => {
 
     if(Rotating){
-      services.getCurrentPlan().then(
-        (response) => {
-          // console.log(response);
-          // currentBalance
-          // refreshedAt
-          if(response.currentPlan == null) {
-            const rft = timeFormat(response.refreshedAt);
-            setrefreshTime(rft);
-            setcurrentBalance(Lang.Currency(response.currentBalance));
-            setRotating(false);
+      dispatch(getDataAsync({loading:false})).then(
+        () => {
+          setRotating(false);
+        }
+      );
+      // services.getCurrentPlan().then(
+      //   (response) => {
+      //     // console.log(response);
+      //     // currentBalance
+      //     // refreshedAt
+      //     if(response.currentPlan == null) {
+      //       const rft = timeFormat(response.refreshedAt);
+      //       setrefreshTime(rft);
+      //       setcurrentBalance(Lang.Currency(response.currentBalance));
+      //       setRotating(false);
             
-          }else {
-            const rft = timeFormat(response.refreshedAt);
-            setrefreshTime(rft);
-            setcurrentPlan(response.currentPlan);
-            setcurrentBalance(Lang.Currency(response.currentBalance))
-            setRotating(false);
-          }
-        });
-    }
-    
-
-      
-  }, [Rotating])
+      //     }else {
+      //       const rft = timeFormat(response.refreshedAt);
+      //       setrefreshTime(rft);
+      //       setcurrentPlan(response.currentPlan);
+      //       setcurrentBalance(Lang.Currency(response.currentBalance))
+            
+      //     }
+      //   });
+    }   
+  }, [Rotating]);
 
   const [windowSize, setWindowSize] = useState([
     window.innerWidth,
@@ -239,8 +221,8 @@ import Lang from "../commons/Lang";
 
   }
 
-  const remainData = Math.round(currentPlan.remainingData * 100) / 100;
-  const maxData = Math.round(currentPlan.maxData * 100) / 100;
+  const remainData = Math.round(currentstatus.currentPlan?.remainingData * 100) / 100;
+  const maxData = Math.round(currentstatus.currentPlan?.maxData * 100) / 100;
   let url = "";
   if(windowSize[0] > 480) {
       url = "https://dev-anandaselfcareweb.azurewebsites.net/top-up"
@@ -266,10 +248,10 @@ import Lang from "../commons/Lang";
             <div className="col s12">
               <div className="card border-radius student-db">
                 <div className="card-content">
-                  <h5 className="title margin-5px-top">{currentPlan.title}</h5>
+                  <h5 className="title margin-5px-top">{currentstatus.currentPlan == null ?  "Student Pro" : currentstatus.currentPlan?.title }</h5>
 
                   {/* <p className="light-font">{ `Valid for ${currentPlan.validUntil == 0 ? "0 hours, 0 minutes" : diff_time(currentPlan.validUntil)}` }</p> */}
-                  <p className="light-font">{ `${currentPlan.validUntil == 0 ? "Valid till 8 AM" : "Valid till 8 AM " + diff_time(currentPlan.validUntil)}` }</p>
+                  <p className="light-font">{ `${currentstatus.currentPlan == null ? "Valid till 8 AM" : "Valid till 8 AM " + diff_time(currentstatus.currentPlan?.validUntil)}` }</p>
                   <div className="row center padding-15px-top">
                     <div className="col b-skills s12 m6 offset-m3 justify-content-center flex-column">
 
@@ -278,7 +260,7 @@ import Lang from "../commons/Lang";
 
                       
                       <p className="refresh margin-10px-top">
-                        Refreshed at {refreshTime}
+                        Refreshed at {timeFormat(currentstatus.refreshedAt)}
                         <span className="refbtn" onClick={() => setRotating(true) }>
                           <i className={`material-icons dp48 ${Rotating ? "imageRot" : ""}`}>refresh</i>
                         </span>
@@ -301,7 +283,7 @@ import Lang from "../commons/Lang";
                   <div className="row valign-wrapper">
                     <div className="col s8 m8">
                       <p className="text-white">
-                        Main Balance - <span className="fw-bold">{currentBalance}</span>
+                        Main Balance - <span className="fw-bold">{Lang.Currency(currentstatus.currentBalance)}</span>
                       </p>
                     </div>
                     <div className="col s2 offset-s2 m2 offset-m2">

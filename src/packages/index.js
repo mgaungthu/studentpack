@@ -9,6 +9,8 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import services from "../services";
 import Lang from "../commons/Lang";
 import backArrow from "../commons/back-arrow.png";
+import { getPackagesAsync } from "../redux/packagesSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 
 
@@ -17,9 +19,11 @@ const Packages = () => {
 
   const [TabActive, setTabActive] = useState(0);
   
-  const [isLoading, setisLoading] = useState(true);
-  const [greenPlan,setgreenPlan] = useState([]);
-  const [pinkPlan,setpinkPlan] = useState([]);
+  // const [isLoading, setisLoading] = useState(false);
+  // const [getGreenPlan,setgetGreenPlan] = useState([]);
+  // const [getPinkPlan,setgetPinkPlan] = useState([]);
+  const {allpackages,loading} = useSelector((state) => state.packages );
+  const dispatch =  useDispatch();
 
 
   const settings = {
@@ -32,30 +36,55 @@ const Packages = () => {
   };
 
 
+  const  isLoading = loading;
+
+  
+  let getGreenPlan = [];
+  let getPinkPlan = [];
+
+  allpackages[0]?.groupItems.map(value => {
+    // console.log(value);
+    if(value.dataLimit == 1){
+      getGreenPlan.push(value);
+    }else {
+      getPinkPlan.push(value);
+    }
+    
+  }); 
+
+  getGreenPlan.reverse();
+  getPinkPlan.reverse();
+
+
   useEffect(() => {
 
-    services.getAllPlan().then(
-      (response) => {
-        // console.log(response);
-        let getGreenPlan = [];
-        let getPinkPlan = [];
-        response[0].groupItems.map(value => {
-          // console.log(value);
-          if(value.dataLimit == 1){
-            getGreenPlan.push(value);
-          }else {
-            getPinkPlan.push(value);
-          }
+    if(allpackages.length === 0) {
+      dispatch(getPackagesAsync());
+    }
+ 
+
+    // services.getAllPlan().then(
+    //   (response) => {
+    //     // console.log(response);
+    //     let getGreenPlan = [];
+    //     let getPinkPlan = [];
+    //     response[0].groupItems.map(value => {
+    //       // console.log(value);
+    //       if(value.dataLimit == 1){
+    //         getGreenPlan.push(value);
+    //       }else {
+    //         getPinkPlan.push(value);
+    //       }
           
-        });
-        setgreenPlan(getGreenPlan.reverse());
-        setpinkPlan(getPinkPlan.reverse());
-        // console.log(pinkPlan);
-        setisLoading(false);
-      }
-    ).catch((err) => {
-      console.log(err.message);
-    });
+    //     });
+    //     setgetGreenPlan(getGreenPlan.reverse());
+    //     setgetPinkPlan(getPinkPlan.reverse());
+    //     // console.log(getPinkPlan);
+    //     setisLoading(false);
+    //   }
+    // ).catch((err) => {
+    //   console.log(err.message);
+    // });
 
 
   }, [])
@@ -181,7 +210,7 @@ const Packages = () => {
 
       }
 
-      if(greenPlan.length === 0 && pinkPlan.length === 0) {
+      if(getGreenPlan.length === 0 && getPinkPlan.length === 0) {
         return (null);
       }
 
@@ -194,7 +223,7 @@ const Packages = () => {
 
 
             {
-              greenPlan.map((value) =>
+              getGreenPlan.map((value) =>
 
                 <div className="col" key={value.id}>
                   <div className="packages green-box margin-10px-bottom border-radius padding-10px-tb padding-20px-lr">
@@ -258,7 +287,7 @@ const Packages = () => {
         <div id="pack-2" className="col s12 m6 tab-content padding-40px-bottom" style={{ padding: "0px" }}>
             <Slider {...settings}>
             {
-                pinkPlan.map((value) =>
+                getPinkPlan.map((value) =>
   
                   <div className="col" key={value.id}>
                     <div className="packages pink-box margin-10px-bottom border-radius padding-10px-tb padding-20px-lr">
@@ -331,7 +360,7 @@ const Packages = () => {
 
 
             {
-              greenPlan.map((value) =>
+              getGreenPlan.map((value) =>
 
                 <div className="col" key={value.id}>
                   <div className="packages green-box margin-10px-bottom border-radius padding-10px-tb padding-20px-lr">
@@ -404,7 +433,7 @@ const Packages = () => {
         <div id="pack-2" className="col s12 m6 tab-content padding-40px-bottom" style={{ padding: "0px" }}>
             <Slider {...settings}>
             {
-                pinkPlan.map((value) =>
+                getPinkPlan.map((value) =>
   
                   <div className="col" key={value.id}>
                     <div className="packages pink-box margin-10px-bottom border-radius padding-10px-tb padding-20px-lr">
@@ -479,7 +508,7 @@ const Packages = () => {
   // const PackageTwo = () => {
   //   if (TabActive == 2 || TabActive == 0 ) {
 
-  //     // if(pinkPlan.length > 0) {
+  //     // if(getPinkPlan.length > 0) {
 
   //       if (isLoading) {
 
@@ -536,7 +565,7 @@ const Packages = () => {
         
   //       }
 
-  //       if(pinkPlan.length === 0) {
+  //       if(getPinkPlan.length === 0) {
   //         return (null);
   //       }
   
@@ -559,7 +588,7 @@ const Packages = () => {
 
   const PackageTab = () => {
 
-    if(pinkPlan.length > 0 && greenPlan.length > 0) {
+    if(getPinkPlan.length > 0 && getGreenPlan.length > 0) {
       return (
         <>
           <ul id="packages" className="tabs custom-tab-menu">
@@ -577,7 +606,7 @@ const Packages = () => {
                 </ul>
         </>
       )
-    } else if ( greenPlan.length > 0 )
+    } else if ( getGreenPlan.length > 0 )
     {
       return (
         <>
@@ -594,7 +623,7 @@ const Packages = () => {
         </>
       ) 
     }
-    else if ( pinkPlan.length > 0 )
+    else if ( getPinkPlan.length > 0 )
     {
       return (
         <>
